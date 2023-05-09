@@ -11,7 +11,7 @@ export default function (content, inject) {
     const script = document.createElement("script");
     script.async = true;
     script.src =
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyA9ZM-myOFjvyqMLsqIMYy64_dssHZ0izQ&libraries=places";
+      "https://maps.googleapis.com/maps/api/js?key=mykey&libraries=places";
     window.initMap = initMap;
     document.head.appendChild(script);
   }
