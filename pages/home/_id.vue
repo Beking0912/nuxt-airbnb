@@ -20,16 +20,16 @@
     <div v-for="review in reviews" :key="review.objectID">
       <img :src="review.reviewer.picture" width="50" height="50" /><br />
       {{ review.reviewer.name }}<br />
-      {{ review.rating }}<br />
-      {{ review.content }}<br />
-      {{ review.createdAt }}<br />
-      {{ review.reply }}
+      {{ formatDate(review.date) }}<br />
+      <short-text :text="review.comment" />
     </div>
   </div>
 </template>
 <script>
+import ShortText from '../../components/ShortText.vue';
 // import homes from "~/data/homes";
 export default {
+  components: { ShortText },
   // layout: "red",
   head() {
     return {
@@ -54,6 +54,15 @@ export default {
       return error({ statusCode: reviewResponse.status });
     }
     return { home: homeResponse.json, reviews: reviewResponse.json.hits };
+  },
+  methods: {
+    formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+      });
+    },
   },
 };
 </script>
