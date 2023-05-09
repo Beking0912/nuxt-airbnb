@@ -36,8 +36,11 @@ export default {
     );
   },
   async asyncData({ params, $dataApi }) {
-    const home = await $dataApi.getHome(params.id);
-    return { home };
+    const response = await $dataApi.getHome(params.id);
+    if (!response.ok) {
+      return error({ statusCode: response.status });
+    }
+    return { home: response.json };
   },
 };
 </script>
