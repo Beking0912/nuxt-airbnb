@@ -28,11 +28,19 @@ export default {
       title: this.home.title,
       scripts: [
         {
-          src: "https://maps.googleapis.com/maps/api/js?key=mykey&libraries=places",
+          src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyA9ZM-myOFjvyqMLsqIMYy64_dssHZ0izQ&libraries=places",
           hid: "map",
           defer: true,
+          skip: process.client && window.mapLoaded,
+        },
+        {
+          innerHTML: "window.initMap = function(){window.mapLoaded=true;};",
+          hid: "map-init",
         },
       ],
+      // __dangerouslyDisableSanitizersByTagID: {
+      //   "map-init": ["innerHTML"],
+      // },
     };
   },
   data() {
@@ -40,8 +48,9 @@ export default {
       home: {},
     };
   },
-  mounted() {
-    const mapOptions = {
+  methods: {
+    showMap(){
+      const mapOptions = {
       zoom: 18,
       center: new google.maps.LatLng(
         this.home._geoloc.lat,
@@ -57,6 +66,15 @@ export default {
     );
     const marker = new window.google.maps.Marker({ position });
     marker.setMap(map);
+    }
+  },
+  mounted() {
+    const timer = setInterval(() => {
+      if (window.mapLoaded) {
+        clearInterval(timer);
+        this.showMap();
+      }
+    }, 200);
   },
   created() {
     const home = homes.find((home) => home.objectID === this.$route.params.id);
