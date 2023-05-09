@@ -20,6 +20,7 @@
 <script>
 import homes from "~/data/homes";
 export default {
+  // layout: "red",
   data() {
     return {
       home: {},
