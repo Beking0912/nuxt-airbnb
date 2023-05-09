@@ -1,5 +1,21 @@
 <template>
-  <div>{{ home.title }}</div>
+  <div>
+    <div style="display: flex">
+      <img
+        v-for="image in home.images"
+        :key="image"
+        :src="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    {{ home.title }}<br />
+    ${{ home.pricePerNight }} / night<br />
+    {{ home.location.address }} {{ home.location.city }} {{ home.location.state
+    }}<br />
+    {{ home.guests }} guests, {{ home.bedrooms }} bedrooms, {{ home.beds }} beds
+    ,{{ home.baths }} baths<br />
+  </div>
 </template>
 <script>
 import homes from "~/data/homes";
