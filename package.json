@@ -1,0 +1,11 @@
+{
+  "name": "nuxt-app",
+  "dependencies": {
+    "nuxt": "2.14.0"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  }
+}
