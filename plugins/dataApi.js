@@ -9,7 +9,8 @@ export default function (content, inject) {
   inject("dataApi", {
     getHome,
     getReviewByHomeId,
-    getUserByHomeId
+    getUserByHomeId,
+    getHomeByLocation
   });
 
   async function getHome(homeId) {
@@ -46,16 +47,18 @@ export default function (content, inject) {
     }
   }
 
-  async function getUserByHomeId(homeId) {
+  async function getHomeByLocation(lat, lang, radiusInMeters = 1500) {
     try {
       return unWrap(
         await fetch(
-          `https://${appId}-dsn.algolia.net/1/indexes/users/query`,
+          `https://${appId}-dsn.algolia.net/1/indexes/homes/query`,
           {
             headers,
             method: "POST",
             body: JSON.stringify({
-              filters: `homeId:${homeId}`,
+              aroundLatLng: `${lat}, ${lang}`,  
+              aroundRadius: radiusInMeters, 
+              hitsPerPage : 10,
               attributesToHighlight: [],
             }),
           }
