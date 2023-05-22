@@ -57,11 +57,18 @@ export default function (content, inject) {
       center: new google.maps.LatLng(lat, lng),
       disableDefaultUI: true,
       zoomControl: true,
+      styles: [{
+        featureType: 'poi.business',
+        elementType: 'labels.icon',
+        stylers: [{
+          visibility: 'off'
+        }]
+      }]
     };
     const map = new window.google.maps.Map(canvas, mapOptions);
     if (!markers) {
       const position = new window.google.maps.LatLng(lat, lng);
-      const marker = new window.google.maps.Marker({ position });
+      const marker = new window.google.maps.Marker({ position, clickable: false });
       marker.setMap(map);
       return
     }
@@ -73,7 +80,15 @@ export default function (content, inject) {
         markerItems.lng
       );
       bounds.extend(position);
-      const marker = new window.google.maps.Marker({ position });
+      const marker = new window.google.maps.Marker({
+        position,
+        label: {
+          text: `$${markerItems.pricePerNight}`,
+          className: `marker home-${markerItems.id}`,
+        },
+        icon: 'https://maps.gstatic.com/mapfiles/transparent.png',
+        clickable: false,
+      });
       marker.setMap(map);
     });
 
