@@ -23,6 +23,11 @@
       {{ formatDate(review.date) }}<br />
       <short-text :text="review.comment" />
     </div>
+    <img :src="user.image"/><br/>
+    {{ user.name }}<br/>
+    {{ formatDate(user.joined) }}<br/>
+    {{  user.reviewCount }} reviews<br/>
+    {{ user.description }}
   </div>
 </template>
 <script>
@@ -49,11 +54,16 @@ export default {
       return error({ statusCode: homeResponse.status });
     }
 
-    const reviewResponse = await $dataApi.getHome(params.id);
+    const reviewResponse = await $dataApi.getReviewByHomeId(params.id);
     if (!reviewResponse.ok) {
       return error({ statusCode: reviewResponse.status });
     }
-    return { home: homeResponse.json, reviews: reviewResponse.json.hits };
+
+    const userResponse = await $dataApi.getUserByHomeId(params.id);
+    if (!userResponse.ok) {
+      return error({ statusCode: userResponse.status });
+    }
+    return { home: homeResponse.json, reviews: reviewResponse.json.hits, user: userResponse.json.hits[0] };
   },
   methods: {
     formatDate(dateStr) {
