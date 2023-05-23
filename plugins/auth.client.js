@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie';
+import { unWrap } from '../utils/fetchUtils';
 
 export default ({ $config }) => {
     window.initAuth = init;
@@ -27,22 +28,28 @@ export default ({ $config }) => {
         })
     }
 
-    function parseUser(user) {
-        const profile = user.getBasicProfile();
-        console.log('name:', profile.getName());
+    async function parseUser(user) {
         if (!user.isSignedIn()) {
             Cookie.remove($config.auth.cookieName);
             StorageEvent.commit('auth/user', null)
             return
         }
 
-        store.commit('auth/user', {
-            fullName: profile.getName(),
-            profileUrl: profile.getImageUrl(),
-        });
-        
         const idToken = user.getAuthResponse().id_token;
         Cookies.set($config.auth.cookieName, idToken, { expires: 1/24, sameSite: 'Lax' });
+
+        try {
+            const response = await unWrap(await fetch('/api/user'))
+            const user = response.json
+
+            store.commit('auth/user', {
+                fullName: user.name,
+                profileUrl: user.image,
+            });
+        } catch (error) {
+            throw new Error('Unable to fetch user data')
+        }
+        
     }
 
     function signOut() {
