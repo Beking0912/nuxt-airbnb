@@ -15,12 +15,8 @@
             <div class="app-user-menu">
                 <img src="/images/icons/house.svg" />
                 <div class="name">host</div>
-                <img src="/images/user.jpg" class="avatar" />
+                <div id="googleButton"></div>
             </div>
-        </header>
-        <header style="background-color: #eee;">
-            <nuxt-link to="/">Home</nuxt-link>
-            <input type="text" ref="citySearch" @changed="changed" />
         </header>
         <nuxt/>
     </div>
@@ -32,9 +28,6 @@ export default {
         this.$maps.makeAutocomplete(this.$refs.citySearch);
     },
     methods: {
-        test() {
-            this.$store.dispatch('auth/counterUp')
-        },
         changed(event) {
             const place = event.detail;
             if (!place.geometry) return

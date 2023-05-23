@@ -17,7 +17,7 @@ export default {
   router: {
     prefetchLinks: false,
   },
-  plugins: ["~/plugins/maps.client.js", "~/plugins/dataApi.js"],
+  plugins: ["~/plugins/maps.client.js", "~/plugins/dataApi.js", '~/plugins.auth.client.js'],
   modules: [], 
   buildModules: ["@nuxtjs/tailwindcss"],
   css: ["~/assets/sass/app.scss"],
@@ -28,10 +28,11 @@ export default {
     }
   },
   publicRuntimeConfig: {
-    // test1: "public",
-    // test2: "public",
+    auth: {
+      cookieName: "idToken",
+      clientId: "myclientid",
+    },
   },
   privateRuntimeConfig: {
-    // test2: process.env.TEST
   },
 };
