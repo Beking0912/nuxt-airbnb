@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div class="app-container">
+    <PropertyGallery :images="home.images"/>
+    <PropertyDetails :home="home"/>
+    <PropertyDescription :home="home"/>
+    <PropertyMap :home="home"/>
+    <PropertyReviews :reviews="reviews"/>
+    <PropertyHost :user="user"/>
     <div style="display: flex">
       <img
         v-for="image in home.images"
@@ -21,7 +27,7 @@
       <img :src="review.reviewer.picture" width="50" height="50" /><br />
       {{ review.reviewer.name }}<br />
       {{ formatDate(review.date) }}<br />
-      <short-text :text="review.comment" />
+      <short-text :text="review.comment" :target="150"/>
     </div>
     <img :src="user.image"/><br/>
     {{ user.name }}<br/>
@@ -31,10 +37,16 @@
   </div>
 </template>
 <script>
+import PropertyDescription from '../../components/PropertyDescription.vue';
+import PropertyDetails from '../../components/PropertyDetails.vue';
+import PropertyGallery from '../../components/PropertyGallery.vue';
+import PropertyHost from '../../components/PropertyHost.vue';
+import PropertyMap from '../../components/PropertyMap.vue';
+import PropertyReviews from '../../components/PropertyReviews.vue';
 import ShortText from '../../components/ShortText.vue';
 // import homes from "~/data/homes";
 export default {
-  components: { ShortText },
+  components: { ShortText, PropertyGallery, PropertyDescription, PropertyMap, PropertyReviews, PropertyHost },
   // layout: "red",
   head() {
     return {
