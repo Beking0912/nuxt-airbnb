@@ -17,8 +17,8 @@ export default {
   router: {
     prefetchLinks: false,
   },
-  plugins: ["~/plugins/maps.client.js", "~/plugins/dataApi.js", '~/plugins.auth.client.js'],
-  modules: [], 
+  plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
+  modules: ['~/modules/auth'], 
   buildModules: ["@nuxtjs/tailwindcss"],
   css: ["~/assets/sass/app.scss"],
   build: {
@@ -35,5 +35,5 @@ export default {
   },
   privateRuntimeConfig: {
   },
-  // serverMiddleware: ['myServerMiddleware.js']
+  // serverMiddleware: ['myServerMiddleware']
 };
