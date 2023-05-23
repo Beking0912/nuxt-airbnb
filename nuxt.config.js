@@ -35,4 +35,5 @@ export default {
   },
   privateRuntimeConfig: {
   },
+  // serverMiddleware: ['myServerMiddleware.js']
 };
