@@ -32,6 +32,9 @@ export default {
         this.$maps.makeAutocomplete(this.$refs.citySearch);
     },
     methods: {
+        test() {
+            this.$store.dispatch('auth/counterUp')
+        },
         changed(event) {
             const place = event.detail;
             if (!place.geometry) return

@@ -27,4 +27,11 @@ export default {
       limit: 0,
     }
   },
+  publicRuntimeConfig: {
+    // test1: "public",
+    // test2: "public",
+  },
+  privateRuntimeConfig: {
+    // test2: process.env.TEST
+  },
 };
