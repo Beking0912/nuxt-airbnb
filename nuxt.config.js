@@ -18,7 +18,7 @@ export default {
     prefetchLinks: false,
   },
   plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
-  modules: ['~/modules/auth'], 
+  modules: ['~/modules/auth', '~/modules/algolia''], 
   buildModules: ["@nuxtjs/tailwindcss"],
   css: ["~/assets/sass/app.scss"],
   build: {
@@ -32,8 +32,16 @@ export default {
       cookieName: "idToken",
       clientId: "myclientid",
     },
+    algolia: {
+      appId: 'myId',
+      apiKey: 'myKey'
+    }
   },
   privateRuntimeConfig: {
+    algolia: {
+      appId: 'myId',
+      key: 'myKey'
+    }
   },
   // serverMiddleware: ['myServerMiddleware']
 };
