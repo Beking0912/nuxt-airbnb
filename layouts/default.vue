@@ -1,5 +1,23 @@
 <template>
-    <div>
+    <div class="app">
+        <header class="app-logo">
+            <div class="app-logo">
+                <img src="/images/logo.svg" />
+            </div>
+            <div class="app-search">
+                <input type="text" ref="citySearch" @changed="changed" placeholder="enter your address" />
+                <input type="text" class="datepicker" placeholder="check in"/>
+                <input type="text" class="datepicker" placeholder="check out"/>
+                <button>
+                    <img src="/images/icons/search.svg" />
+                </button>
+            </div>
+            <div class="app-user-menu">
+                <img src="/images/icons/house.svg" />
+                <div class="name">host</div>
+                <img src="/images/user.jpg" class="avatar" />
+            </div>
+        </header>
         <header style="background-color: #eee;">
             <nuxt-link to="/">Home</nuxt-link>
             <input type="text" ref="citySearch" @changed="changed" />
