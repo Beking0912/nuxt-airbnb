@@ -18,8 +18,14 @@ export default {
     prefetchLinks: false,
   },
   plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
-  modules: ['~/modules/auth', '~/modules/algolia''], 
+  modules: ['~/modules/auth', '~/modules/algolia'], 
   buildModules: ["@nuxtjs/tailwindcss"],
+  serverMiddleware: [
+    function(req, res, next) {
+      console.log(req.body);
+      next();
+    }
+  ],
   css: ["~/assets/sass/app.scss"],
   build: {
     extractCSS: true,

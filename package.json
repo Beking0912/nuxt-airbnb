@@ -1,6 +1,7 @@
 {
   "name": "nuxt-app",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cookie": "^0.5.0",
     "nuxt": "2.14.0"
   },
