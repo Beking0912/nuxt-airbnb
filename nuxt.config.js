@@ -18,7 +18,7 @@ export default {
     prefetchLinks: false,
   },
   plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
-  modules: ['~/modules/auth', '~/modules/algolia'], 
+  modules: ['~/modules/auth', '~/modules/algolia', '~/modules/cloudinary'], 
   buildModules: ["@nuxtjs/tailwindcss"],
   serverMiddleware: [
     function(req, res, next) {
@@ -47,6 +47,9 @@ export default {
     algolia: {
       appId: 'myId',
       key: 'myKey'
+    },
+    cloudinary: {
+      apisecret: 'mySecret'
     }
   },
   // serverMiddleware: ['myServerMiddleware']
