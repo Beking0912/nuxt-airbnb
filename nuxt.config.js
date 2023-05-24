@@ -18,14 +18,11 @@ export default {
     prefetchLinks: false,
   },
   plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
-  modules: ['~/modules/auth', '~/modules/algolia', '~/modules/cloudinary'], 
+  modules: ['~/modules/auth', '~/modules/algolia', '~/modules/cloudinary', '@nuxtjs/cloudinary'], 
   buildModules: ["@nuxtjs/tailwindcss"],
-  serverMiddleware: [
-    function(req, res, next) {
-      console.log(req.body);
-      next();
-    }
-  ],
+  cloudinary: {
+    cloudName: 'myCloudName',
+  },
   css: ["~/assets/sass/app.scss"],
   build: {
     extractCSS: true,
@@ -40,6 +37,9 @@ export default {
     },
     algolia: {
       appId: 'myId',
+      apiKey: 'myKey'
+    },
+    cloudinary: {
       apiKey: 'myKey'
     }
   },

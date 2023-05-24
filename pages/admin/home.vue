@@ -2,6 +2,7 @@
     <div>[LIST OF HOMES HERE]
     <h2 class="text-xl bold">Add a Home</h2>
     <form class="form" @submit.prevent="onSubmit">
+        <image-uploader/>
         Images:<br/>
         <input type='text' v-model="home.images[0]" class="w-3/4"/><br/>
         <input type='text' v-model="home.images[1]" class="w-3/4"/><br/>
@@ -38,10 +39,12 @@
     </div>
     </template>
 <script>
+import ImageUploader from '../../components/ImageUploader.vue'
 export default {
     data() {
         return {
-            home: {
+       
+        ImageUploader     home: {
                 title: "",
                 description: "",
                 note: "",
