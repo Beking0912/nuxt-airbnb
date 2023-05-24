@@ -49,7 +49,7 @@ export default function ({ $config }, inject) {
     }
   }
 
-  async function getHomeByLocation(lat, lang, radiusInMeters = 1500) {
+  async function getHomeByLocation(lat, lang, radiusInMeters = 1500 * 15) {
     try {
       return unWrap(
         await fetch(
