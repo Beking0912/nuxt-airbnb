@@ -20,6 +20,29 @@ export default (algoliaConfig) => {
             } catch (error) {
                 return getErrorResponse(error);
             }
-        }
+        },
+        getByUserId: async (userId) =>  {
+          try {
+              return unWrap(
+                await fetch(
+                  `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/homes/query`,
+                  {
+                    headers,
+                    method: "POST",
+                    body: JSON.stringify({
+                      filter: `userId:${userId}`,
+                      attributesToRetrieve: [
+                        'objectID',
+                        'title',
+                      ],
+                      attributesToHighlight: [],
+                    }),
+                  }
+                )
+              );
+          } catch (error) {
+              return getErrorResponse(error);
+          }
+      }
     }
 }

@@ -1,48 +1,54 @@
 <template>
-    <div>[LIST OF HOMES HERE]
-    <h2 class="text-xl bold">Add a Home</h2>
-    <form class="form" @submit.prevent="onSubmit">
-        Images:<br/>
-        <image-uploader @file-uploaded="imageUpdated($event, 0)"/>
-        <image-uploader @file-uploaded="imageUpdated($event, 1)"/>
-        <image-uploader @file-uploaded="imageUpdated($event, 2)"/>
-        <image-uploader @file-uploaded="imageUpdated($event, 3)"/>
-        <image-uploader @file-uploaded="imageUpdated($event, 4)"/>
-        Title: <br/>
-        <input type='text' v-model="home.title" class="w-60"/><br/>
-        Description<br/>
-        <textarea v-model="home.description" class="w-104"></textarea><br/>
-        Note<br/>
-        <textarea v-model="home.note" class="w-104"></textarea><br/>
-        Features<br/>
-        <input type='text' v-model="home.features[0]" class="w-26"/>
-        <input type='text' v-model="home.features[1]" class="w-26"/>
-        <input type='text' v-model="home.features[2]" class="w-26"/>
-        <input type='text' v-model="home.features[3]" class="w-26"/>
-        <input type='text' v-model="home.features[4]" class="w-26"/><br/>
-        Price Per Night<br/>
-        <input type='number' v-model="home.pricePerNight" class="w-14"/><br/>
-        Guests / Rooms / Beds / Baths<br/>
-        <input type='number' v-model="home.guests" class="w-14"/>
-        <input type='number' v-model="home.bedrooms" class="w-14"/>
-        <input type='number' v-model="home.beds" class="w-14"/>
-        <input type='number' v-model="home.bathrooms" class="w-14"/><br/>
-        <input type='text' ref='locationSelector' autocomplete='off' placeholder='Select a location' @changed='changed'/><br/>
-        Address: <input type='text' v-model="home.location.address" class="w-60"/><br/>
-        City: <input type='text' v-model="home.location.city" class="w-26"/><br/>
-        State: <input type='text' v-model="home.location.state" class="w-26"/><br/>
-        Postal Code: <input type='text' v-model="home.location.postalCode" class="w-26"/><br/>
-        Country: <input type='text' v-model="home.location.country" class="w-26"/><br/>
-        <button class="border px-4 py-2 border-gray-400">Add</button>
-    </form>
+    <div>
+        <span v-for="home in homeList" :key="home.objectID">{{ home.title }}:
+          <button class="text-red-800">delete</button><br/>
+        </span>
+        <h2 class="text-xl bold">Add a Home</h2>
+        <form class="form" @submit.prevent="onSubmit">
+            Images:<br />
+            <image-uploader @file-uploaded="imageUpdated($event, 0)" />
+            <image-uploader @file-uploaded="imageUpdated($event, 1)" />
+            <image-uploader @file-uploaded="imageUpdated($event, 2)" />
+            <image-uploader @file-uploaded="imageUpdated($event, 3)" />
+            <image-uploader @file-uploaded="imageUpdated($event, 4)" />
+            Title: <br />
+            <input type='text' v-model="home.title" class="w-60" /><br />
+            Description<br />
+            <textarea v-model="home.description" class="w-104"></textarea><br />
+            Note<br />
+            <textarea v-model="home.note" class="w-104"></textarea><br />
+            Features<br />
+            <input type='text' v-model="home.features[0]" class="w-26" />
+            <input type='text' v-model="home.features[1]" class="w-26" />
+            <input type='text' v-model="home.features[2]" class="w-26" />
+            <input type='text' v-model="home.features[3]" class="w-26" />
+            <input type='text' v-model="home.features[4]" class="w-26" /><br />
+            Price Per Night<br />
+            <input type='number' v-model="home.pricePerNight" class="w-14" /><br />
+            Guests / Rooms / Beds / Baths<br />
+            <input type='number' v-model="home.guests" class="w-14" />
+            <input type='number' v-model="home.bedrooms" class="w-14" />
+            <input type='number' v-model="home.beds" class="w-14" />
+            <input type='number' v-model="home.bathrooms" class="w-14" /><br />
+            <input type='text' ref='locationSelector' autocomplete='off' placeholder='Select a location'
+                @changed='changed' /><br />
+            Address: <input type='text' v-model="home.location.address" class="w-60" /><br />
+            City: <input type='text' v-model="home.location.city" class="w-26" /><br />
+            State: <input type='text' v-model="home.location.state" class="w-26" /><br />
+            Postal Code: <input type='text' v-model="home.location.postalCode" class="w-26" /><br />
+            Country: <input type='text' v-model="home.location.country" class="w-26" /><br />
+            <button class="border px-4 py-2 border-gray-400">Add</button>
+        </form>
     </div>
-    </template>
+</template>
 <script>
-import ImageUploader from '../../components/ImageUploader.vue'
+import { unWrap } from '../../utils/fetchUtils'
+
 export default {
     data() {
         return {
-             home: {
+            homeList: [],
+            home: {
                 title: "",
                 description: "",
                 note: "",
@@ -66,14 +72,18 @@ export default {
             }
         }
     },
-    mounted(){
+    mounted() {
         this.$maps.makeAutoComplete(this.$refs.locationSelector, ['address'])
+        this.setHomesList()
     },
-    methods:{
+    methods: {
+        async setHomesList() {
+            this.homeList = (await unWrap(await fetch('/api/homes'))).json
+        },
         imageUpdated(imageUrl, index) {
             this.home.images[index] = imageUrl
         },
-        changed(event){
+        changed(event) {
             const addressParts = event.detail.address_components
             const street = this.getAddressPart(addressParts, 'street_number')?.short_name || ''
             const route = this.getAddressPart(addressParts, 'route')?.short_name || ''
@@ -86,10 +96,10 @@ export default {
             this.home._geoloc.lat = geo.lat()
             this.home._geoloc.lng = geo.lng()
         },
-        getAddressPart(parts, type){
+        getAddressPart(parts, type) {
             return parts.find(part => part.types.includes(type))
         },
-        async onSubmit(){
+        async onSubmit() {
             await fetch('/api/homes', {
                 method: 'POST',
                 body: JSON.stringify(this.home),
