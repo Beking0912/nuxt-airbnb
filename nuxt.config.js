@@ -19,9 +19,13 @@ export default {
   },
   plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins.auth.client'],
   modules: ['~/modules/auth', '~/modules/algolia', '~/modules/cloudinary', '@nuxtjs/cloudinary'], 
-  buildModules: ["@nuxtjs/tailwindcss"],
+  buildModules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
   cloudinary: {
     cloudName: 'myCloudName',
+  },
+  image: {
+    cloudinary: {
+      baseURL: 'https://res.cloudinary.com/myCloudName/image/upload/'
   },
   css: ["~/assets/sass/app.scss"],
   build: {
