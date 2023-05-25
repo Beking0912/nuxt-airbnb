@@ -26,6 +26,7 @@ export default {
   image: {
     cloudinary: {
       baseURL: 'https://res.cloudinary.com/myCloudName/image/upload/'
+    }
   },
   css: ["~/assets/sass/app.scss"],
   build: {
@@ -45,6 +46,9 @@ export default {
     },
     cloudinary: {
       apiKey: 'myKey'
+    },
+    stripe: {
+      key: 'myKey'
     }
   },
   privateRuntimeConfig: {
@@ -54,6 +58,9 @@ export default {
     },
     cloudinary: {
       apisecret: 'mySecret'
+    },
+    stripe: {
+      secretKey: process.env.STRIPE_SECRET_KEY
     }
   },
   // serverMiddleware: ['myServerMiddleware']
