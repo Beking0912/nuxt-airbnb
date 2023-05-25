@@ -25,7 +25,7 @@
                         'Content-Type': 'application/json',
                     }
                 }))
-                const signature = response.json.signature
+                const signature = resp.json.signature
                 const readData = (fileObj) => new Promise((resolve) => {
                     const reader = new FileReader()
                     reader.onloadend = () => resolve(reader.result)
