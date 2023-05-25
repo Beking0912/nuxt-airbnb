@@ -1,6 +1,13 @@
 import { defineNuxtConfig } from "@nuxt/bridge";
 
 export default defineNuxtConfig({
+  nitro: {
+    routeRules: {
+      '/admin': {
+        ssr: false
+      }
+    },
+  },
   components: true,
   head: {
     titleTemplate: "nuxt-app: %s",
@@ -25,12 +32,6 @@ export default defineNuxtConfig({
     "~/plugins/auth.client",
     "~/plugins/vCalendar.client",
     "~/plugins/stripe.client",
-  ],
-  modules: [
-    "~/modules/auth",
-    "~/modules/algolia",
-    "~/modules/cloudinary",
-    "~/modules/stripe",
   ],
   buildModules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
   image: {
