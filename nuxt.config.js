@@ -1,5 +1,4 @@
 export default {
-  rootUrl: process.env.NODE_ENV === 'production' ? 'https://myapp.vercel.com' : 'http://localhost:3000',
   components: true,
   head: {
     titleTemplate: "nuxt-app: %s",
@@ -49,6 +48,7 @@ export default {
     },
   },
   publicRuntimeConfig: {
+    rootUrl: process.env.NODE_ENV === 'production' ? 'https://nuxt-bn-b-seven.vercel.app' : 'http://localhost:3000',
     auth: {
       cookieName: "idToken",
       clientId: "myclientid",
