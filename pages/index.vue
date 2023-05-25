@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div
-      v-for="home in homes"
-      :key="home.objectID"
-      style="float: left; margin: 10px"
-    >
+    <div v-for="home in homes" :key="home.objectID" style="float: left; margin: 10px">
       <nuxt-link :to="`/home/${home.objectID}`"><home-card :home="home" /></nuxt-link>
       <!-- <nuxt-link :to="`/home/${home.objectID}`" no-prefetch><home-card :home="home" /></nuxt-link> -->
       <!-- <router-link :to="`/home/${home.objectID}`"><home-card :home="home" /></router-link> -->
@@ -14,7 +10,6 @@
 </template>
 
 <script>
-import homes from "~/data/homes";
 export default {
   head() {
     return {
@@ -28,10 +23,10 @@ export default {
       ],
     };
   },
-  data() {
+  async asyncData({ $dataApi }) {
     return {
-      homes: homes.slice(0, 3),
-    };
-  },
+      homes: (await $dataApi.getHomes()).json.hits
+    }
+  }
 };
 </script>
