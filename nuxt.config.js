@@ -1,4 +1,6 @@
-export default {
+import { defineNuxtConfig } from "@nuxt/bridge";
+
+export default defineNuxtConfig({
   components: true,
   head: {
     titleTemplate: "nuxt-app: %s",
@@ -77,4 +79,4 @@ export default {
     },
   },
   // serverMiddleware: ['myServerMiddleware']
-};
+})
