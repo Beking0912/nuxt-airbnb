@@ -1,96 +1,67 @@
 <template>
   <div class="app-container">
-    <PropertyGallery :images="home.images"/>
-    <PropertyDetails :home="home"/>
-    <PropertyDescription :home="home"/>
-    <PropertyMap :home="home"/>
-    <PropertyReviews :reviews="reviews"/>
-    <PropertyHost :user="user"/>
-    <div style="display: flex">
-      <img
-        v-for="image in home.images"
-        :key="image"
-        :src="image"
-        width="200"
-        height="150"
-      />
-    </div>
-    {{ home.title }}<br />
-    ${{ home.pricePerNight }} / night<br />
-    {{ home.location.address }} {{ home.location.city }} {{ home.location.state
-    }}<br />
-    {{ home.guests }} guests, {{ home.bedrooms }} bedrooms, {{ home.beds }} beds
-    ,{{ home.baths }} baths<br />
-    {{ home.description }}
-    <div style="height: 800px; width: 800px" ref="map"></div>
-    <div v-for="review in reviews" :key="review.objectID">
-      <img :src="review.reviewer.picture" width="50" height="50" /><br />
-      {{ review.reviewer.name }}<br />
-      {{ formatDate(review.date) }}<br />
-      <short-text :text="review.comment" :target="150"/>
-    </div>
-    <img :src="user.image"/><br/>
-    {{ user.name }}<br/>
-    {{ formatDate(user.joined) }}<br/>
-    {{  user.reviewCount }} reviews<br/>
-    {{ user.description }}
+      <PropertyGallery :images="home.images"/>
+      <PropertyDetails :home="home"/>
+      <PropertyDescription :home="home"/>
+      <PropertyMap :home="home"/>
+      <PropertyReviews :reviews="reviews"/>
+      <PropertyHost :user="user"/>    
+      <script type="application/ld+json" v-html="getSchema"></script>
   </div>
-</template>
-<script>
-import PropertyDescription from '../../components/PropertyDescription.vue';
-import PropertyDetails from '../../components/PropertyDetails.vue';
-import PropertyGallery from '../../components/PropertyGallery.vue';
-import PropertyHost from '../../components/PropertyHost.vue';
-import PropertyMap from '../../components/PropertyMap.vue';
-import PropertyReviews from '../../components/PropertyReviews.vue';
-import ShortText from '../../components/ShortText.vue';
-// import homes from "~/data/homes";
-export default {
-  components: { ShortText, PropertyGallery, PropertyDescription, PropertyMap, PropertyReviews, PropertyHost },
-  // layout: "red",
-  head() {
-    return {
-      title: this.home.title,    
-            meta:[
-                { hid: 'og-type', property: 'og:type', content: 'website'},
-                { hid: 'og-title', property: 'og:title', content: this.home.title },
-                { hid: 'og-desc', property: 'og:description', content: this.home.description },
-                { hid: 'og-image', property: 'og:image', 
-                  content: this.$img(this.home.images[0], {width:1200}, { provider: 'cloudinary '})},
-                { hid: 'og-url', property: 'og:url', content: `${this.$config.rootUrl}/home/${this.home.objectID}`},
-                { hid: 't-type', name: 'twitter:card', content: 'summary_large_image' }
-            ]   
-    };
-  },
-  mounted() {
-    this.$maps.showMap(
-      this.$refs.map,
-      this.home._geoloc.lat,
-      this.home._geoloc.lng
-    );
-  },
-  async asyncData({ params, $dataApi }) {
-    const response = await Promise.all([
-      $dataApi.getHome(params.id),
-      $dataApi.getReviewByHomeId(params.id),
-      $dataApi.getUserByHomeId(params.id)
-    ])
-
-    const badResponse = response.find(res => !res.ok);
-    if (badResponse) {
-      return error({ statusCode: badResponse.status });
-    }
-
-    return { home: response[0].json, reviews: response[1].json.hits, user: response[2].json.hits[0] };
-  },
-  methods: {
-    formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "long",
-      });
-    },
-  },
-};
-</script>
+  </template>
+  <script>
+  export default {
+      computed:{
+          getSchema(){
+              return JSON.stringify({
+                  "@context": "http://schema.org",
+                  "@type": "BedAndBreakfast",
+                  "name": this.home.title,
+                  "image":this.$img(this.home.images[0], {width:1200}, { provider: 'cloudinary'}),
+                  "address":{
+                      "@type": "PostalAddress",
+                      "addressLocality": this.home.location.city,
+                      "addressRegion": this.home.location.state,
+                      "postalCode": this.home.location.zipcode,
+                      "streetAddress": this.home.location.address,
+                  },
+                  "aggregateRating":{
+                      "@type": "AggregateRating",
+                      "ratingValue": this.home.reviewValue,
+                      "reviewCount": this.home.reviewCount,
+                  }
+              })
+          }
+      },
+      head(){
+          return {
+              title: this.home.title,    
+              meta:[
+                  { hid: 'og-type', property: 'og:type', content: 'website'},
+                  { hid: 'og-title', property: 'og:title', content: this.home.title },
+                  { hid: 'og-desc', property: 'og:description', content: this.home.description },
+                  { hid: 'og-image', property: 'og:image', 
+                    content: this.$img(this.home.images[0], {width:1200}, { provider: 'cloudinary'})},
+                  { hid: 'og-url', property: 'og:url', content: `${this.$config.rootUrl}/home/${this.home.objectID}`},
+                  { hid: 't-type', name: 'twitter:card', content: 'summary_large_image' }
+              ]               
+          }
+      },   
+      async asyncData({ params, $dataApi, error }){    
+          const responses = await Promise.all([
+              $dataApi.getHome(params.id),
+              $dataApi.getReviewsByHomeId(params.id),
+              $dataApi.getUserByHomeId(params.id),
+          ])
+  
+          const badResponse = responses.find((response) => !response.ok)
+          if(badResponse) return error({ statusCode: badResponse.status, message: badResponse.statusText})
+  
+          return {
+              home: responses[0].json,
+              reviews: responses[1].json.hits,
+              user: responses[2].json.hits[0]
+          }
+      },
+  }
+  </script>
