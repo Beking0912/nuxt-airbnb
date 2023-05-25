@@ -17,7 +17,7 @@ export default function({ $config }, inject){
     }
 
     function initStripe(){
-        stripe = window.Stripe($config.stripe.key)
+        stripe = window.Stripe($config.public.stripe.key)
     }
 
     async function createSession(homeId, start, end){

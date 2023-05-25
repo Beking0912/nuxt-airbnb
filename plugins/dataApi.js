@@ -2,8 +2,8 @@ import { unWrap, getErrorResponse } from '~/utils/fetchUtils'
 
 export default function({ $config }, inject){   
     const headers = {
-        'X-Algolia-API-Key': $config.algolia.key,
-        'X-Algolia-Application-Id': $config.algolia.appId,
+        'X-Algolia-API-Key': $config.public.algolia.key,
+        'X-Algolia-Application-Id': $config.public.algolia.appId,
     }
     inject('dataApi', {
         getHome,
@@ -15,7 +15,7 @@ export default function({ $config }, inject){
 
     async function getHome(homeId){
         try {
-        return unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/homes/${homeId}`, { headers }))        
+        return unWrap(await fetch(`https://${$config.public.algolia.appId}-dsn.algolia.net/1/indexes/homes/${homeId}`, { headers }))        
         } catch(error){
             return getErrorResponse(error)
         }
@@ -23,7 +23,7 @@ export default function({ $config }, inject){
 
     async function getReviewsByHomeId(homeId){
         try {
-            return unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/reviews/query`, {
+            return unWrap(await fetch(`https://${$config.public.algolia.appId}-dsn.algolia.net/1/indexes/reviews/query`, {
                 headers,
                 method: 'POST',
                 body: JSON.stringify({
@@ -39,7 +39,7 @@ export default function({ $config }, inject){
 
     async function getUserByHomeId(homeId){
         try {
-            return unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/users/query`, {
+            return unWrap(await fetch(`https://${$config.public.algolia.appId}-dsn.algolia.net/1/indexes/users/query`, {
                 headers,
                 method: 'POST',
                 body: JSON.stringify({
@@ -58,7 +58,7 @@ export default function({ $config }, inject){
             for(var day = start;day <= end; day += 86400){
                 days.push(`availability:${day}`)
             }
-            return unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/homes/query`, {
+            return unWrap(await fetch(`https://${$config.public.algolia.appId}-dsn.algolia.net/1/indexes/homes/query`, {
                 headers,
                 method: 'POST',
                 body: JSON.stringify({
@@ -75,7 +75,7 @@ export default function({ $config }, inject){
     }
     async function getHomes(){
         try {
-            return unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/homes/query`, {
+            return unWrap(await fetch(`https://${$config.public.algolia.appId}-dsn.algolia.net/1/indexes/homes/query`, {
                 headers,
                 method: 'POST',
                 body: JSON.stringify({                    

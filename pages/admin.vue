@@ -4,14 +4,15 @@
         <div class="bg-gray-200 p-2">
             <nuxt-link to="/admin/homes/">Homes</nuxt-link>
         </div>
+        <nuxt-child></nuxt-child>
     </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
+import Cookie from 'js-cookie'
 
 export default {
-    asyncData({ $config, redirect }) {
-        if (!Cookies.get($config.auth.cookieName)) {
+    asyncData({ $config, redirect }){
+        if(!Cookie.get($config.public.auth.cookieName)){
             redirect('/no-access/')
             return
         }

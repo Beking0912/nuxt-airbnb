@@ -17,7 +17,7 @@ export default ({ $config }) => {
     function init() {
         window.gapi.load('auth2', async () => {
             const auth2 = await window.gapi.auth2.init({
-                client_id: $config.auth.clientId,
+                client_id: $config.public.auth.clientId,
             });
 
             auth2.currentUser.listen(parseUser);
@@ -30,13 +30,13 @@ export default ({ $config }) => {
 
     async function parseUser(user) {
         if (!user.isSignedIn()) {
-            Cookie.remove($config.auth.cookieName);
+            Cookie.remove($config.public.auth.cookieName);
             StorageEvent.commit('auth/user', null)
             return
         }
 
         const idToken = user.getAuthResponse().id_token;
-        Cookies.set($config.auth.cookieName, idToken, { expires: 1/24, sameSite: 'Lax' });
+        Cookies.set($config.public.auth.cookieName, idToken, { expires: 1/24, sameSite: 'Lax' });
 
         try {
             const response = await unWrap(await fetch('/api/user'))

@@ -34,7 +34,7 @@ export default {
             const data = await readData(file)
             const asset = await this.$cloudinary.upload(data, {
                 ...options,
-                apiKey: this.$config.cloudinary.apiKey,
+                apiKey: this.$config.public.cloudinary.apiKey,
                 signature,
             })
 
