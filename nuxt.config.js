@@ -30,13 +30,9 @@ export default defineNuxtConfig({
     "~/modules/auth",
     "~/modules/algolia",
     "~/modules/cloudinary",
-    "@nuxtjs/cloudinary",
     "~/modules/stripe",
   ],
   buildModules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
-  cloudinary: {
-    cloudName: "myCloudName",
-  },
   image: {
     cloudinary: {
       baseURL: "https://res.cloudinary.com/myCloudName/image/upload/",
@@ -61,6 +57,7 @@ export default defineNuxtConfig({
     },
     cloudinary: {
       apiKey: "myKey",
+      cloudName: "myCloudName",
     },
     stripe: {
       key: "myKey",
