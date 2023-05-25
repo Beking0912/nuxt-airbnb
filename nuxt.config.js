@@ -17,23 +17,35 @@ export default {
   router: {
     prefetchLinks: false,
   },
-  plugins: ["~/plugins/maps.client", "~/plugins/dataApi", '~/plugins/auth.client', '~/plugins/vCalendar.client'],
-  modules: ['~/modules/auth', '~/modules/algolia', '~/modules/cloudinary', '@nuxtjs/cloudinary'], 
+  plugins: [
+    "~/plugins/maps.client",
+    "~/plugins/dataApi",
+    "~/plugins/auth.client",
+    "~/plugins/vCalendar.client",
+    "~/plugins/stripe.client",
+  ],
+  modules: [
+    "~/modules/auth",
+    "~/modules/algolia",
+    "~/modules/cloudinary",
+    "@nuxtjs/cloudinary",
+    "~/modules/stripe",
+  ],
   buildModules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
   cloudinary: {
-    cloudName: 'myCloudName',
+    cloudName: "myCloudName",
   },
   image: {
     cloudinary: {
-      baseURL: 'https://res.cloudinary.com/myCloudName/image/upload/'
-    }
+      baseURL: "https://res.cloudinary.com/myCloudName/image/upload/",
+    },
   },
   css: ["~/assets/sass/app.scss"],
   build: {
     extractCSS: true,
     loaders: {
       limit: 0,
-    }
+    },
   },
   publicRuntimeConfig: {
     auth: {
@@ -41,27 +53,27 @@ export default {
       clientId: "myclientid",
     },
     algolia: {
-      appId: 'myId',
-      apiKey: 'myKey'
+      appId: "myId",
+      apiKey: "myKey",
     },
     cloudinary: {
-      apiKey: 'myKey'
+      apiKey: "myKey",
     },
     stripe: {
-      key: 'myKey'
-    }
+      key: "myKey",
+    },
   },
   privateRuntimeConfig: {
     algolia: {
-      appId: 'myId',
-      key: 'myKey'
+      appId: "myId",
+      key: "myKey",
     },
     cloudinary: {
-      apisecret: 'mySecret'
+      apisecret: "mySecret",
     },
     stripe: {
-      secretKey: process.env.STRIPE_SECRET_KEY
-    }
+      secretKey: process.env.STRIPE_SECRET_KEY,
+    },
   },
   // serverMiddleware: ['myServerMiddleware']
 };
