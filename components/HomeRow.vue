@@ -7,6 +7,7 @@
       width="360"
       height="200"
       :src="home.images[0]"    
+      :modifiers="{ effect: 'grayscale', opacity: 50 }"
     />
     <div class="app-house-body">
       <img :src="'/images/icons/heart.svg'" class="app-fov"/>

@@ -5,7 +5,7 @@
                 <div
                     v-for="image in images"
                     :key="image"
-                    :style="`background-image: url(${image})`">
+                    :style="`background-image: url(${getImageUrl(publicId)})`">
                 </div>
             </div>
         </div>
@@ -17,6 +17,15 @@ export default {
         images: {
             type: Array,
             required: true
+        }
+    },
+    methods: {
+        getImageUrl(publicId) {
+            return this.$img(publicId, {
+                width: 600,
+            }, {
+                provider: 'cloudinary',
+            })
         }
     }
 }
